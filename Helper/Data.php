@@ -11,7 +11,7 @@ use Streply\Exceptions\InvalidDsnException;
 class Data extends AbstractHelper
 {
     const XML_PATH_ACTIVE = 'streply/general/active';
-    const XML_PATH_API_KEY = 'streply/general/apikey';
+    const XML_PATH_API_KEY = 'streply/general/dsnurl';
     const INITIALIZE_URL = 'https://xxx@api.streply.com/48';
 
     /**
@@ -63,7 +63,7 @@ class Data extends AbstractHelper
      * @return void
      * @throws \Exception
      */
-    public function initializeStreply()
+    public function initializeStreply(): void
     {
         $initializeUrl = $this->getInitializeUrl();
         try {
@@ -74,19 +74,26 @@ class Data extends AbstractHelper
     }
 
     /**
-     * @return array|string|string[]
+     * @return string
      */
-    protected function getInitializeUrl()
+    protected function getInitializeUrl(): string
     {
-        $dsn = $this->getStreplyDSNfromConfig();
-        return str_replace('xxx', $dsn, self::INITIALIZE_URL);
+        return $this->getStreplyDSNfromConfig();
     }
 
     /**
      * @return mixed
      */
-    protected function getStreplyDSNfromConfig()
+    protected function getStreplyDSNfromConfig(): mixed
     {
         return $this->getConfigValue(self::XML_PATH_API_KEY);
+    }
+
+    /**
+     * @return void
+     */
+    public function flushStreplyClient(): void
+    {
+        \Streply\Flush();
     }
 }

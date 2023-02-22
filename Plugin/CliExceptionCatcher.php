@@ -27,6 +27,7 @@ class CliExceptionCatcher extends AbstractExceptionCatcher
             return $proceed();
         } catch (\Throwable $e) {
             $this->throwStreplyException($e);
+            $this->streplyHelper->flushStreplyClient();
 
             throw $e;
         }
